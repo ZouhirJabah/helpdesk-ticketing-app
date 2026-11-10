@@ -54,19 +54,16 @@ class TicketController extends Controller
 
     public function assign(Request $request, Ticket $ticket)
     {
+
         if (Auth::user()->role !== 'admin') {
             return back()->withErrors(['error' => 'Action non autorisée.']);
         }
 
-        $request->validate([
-            'assigned_to' => 'required|exists:users,id',
-        ]);
-
         $ticket->update([
-            'assigned_to' => $request->assigned_to,
-            'status' => 'Open',
+            'assigned_to' => Auth::id(),
+            'status' => 'Proccessing',
         ]);
 
-        return back()->with('success', 'Ticket assigné avec succès !');
+        return back()->with('success', 'Le ticket vous a été assigné avec succès !');
     }
 }

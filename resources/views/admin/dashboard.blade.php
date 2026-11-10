@@ -1,7 +1,30 @@
 @extends('layouts.main')
 
 @section('title', 'Admin Dashboard')
+<style>
+    .table-custom {
+        background-color: transparent !important;
+        --bs-table-bg: transparent !important;
+    }
 
+    .table-custom thead th {
+        background-color: rgba(90, 104, 83, 0.1) !important;
+        color: #5a6853;
+        border-bottom: 2px solid #5a6853;
+    }
+
+    .table-custom tbody tr {
+        background-color: transparent !important;
+    }
+
+    .table-custom tbody tr:hover {
+        background-color: rgba(90, 104, 83, 0.15) !important;
+    }
+
+    .table-custom td {
+        border-color: rgba(0, 0, 0, 0.05) !important;
+    }
+</style>
 @section('content')
     <div class="row flex-nowrap overflow-auto g-2">
         <div class="col">
@@ -136,6 +159,78 @@
                 </div>
                 <div class="card-body" style="height: 300px; background-color: #e6e3db; border-radius: 0 0 8px 8px;">
                     <canvas id="priorityChart"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row mt-4">
+        <div class="col-12">
+            <div class="card border-0 shadow-sm" style="background-color: transparent;">
+
+                <div class="card-header border-bottom-0 pt-3 d-flex justify-content-between align-items-center"
+                    style="background-color: transparent;">
+                    <h5 class="mb-0 fw-bold" style="color: #5a6853;">
+                        Tickets reçus Aujourd'hui
+                    </h5>
+                    <a href="{{ route('tickets.index') }}" class="btn btn-sm btn-outline-secondary">Voir tout</a>
+                </div>
+
+                <div class="card-body p-0">
+                    <table class="table table-custom table-hover align-middle mb-0">
+                        <thead>
+                            <tr>
+                                <th class="ps-4">Référence</th>
+                                <th>Sujet</th>
+                                <th>Demandeur</th>
+                                <th>Priorité</th>
+                                <th>Statut</th>
+                                <th class="pe-4 text-end">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @forelse($todayTickets as $ticket)
+                                <tr>
+                                    <td class="ps-4"><strong>{{ $ticket->reference }}</strong></td>
+                                    <td>{{ Str::limit($ticket->subject, 40) }}</td>
+                                    <td>{{ $ticket->requester->first_name }} {{ $ticket->requester->last_name }}</td>
+                                    <td>
+                                        @if ($ticket->priority == 'Urgent')
+                                            Urgente
+                                        @elseif($ticket->priority == 'High')
+                                            Haute
+                                        @else
+                                            {{ $ticket->priority }}
+                                        @endif
+                                    </td>
+                                    <td>{{ $ticket->status }}</td>
+                                    <td class="text-end pe-4">
+                                        @if (!$ticket->assigned_to)
+                                            <form action="{{ route('tickets.assign', $ticket->id) }}" method="POST"
+                                                class="d-inline">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="btn btn-sm btn-primary"
+                                                    style="background-color: #5a6853; border-color: #5a6853;">
+                                                    <i class="bi bi-person-plus me-1"></i> M'assigner
+                                                </button>
+                                            </form>
+                                        @else
+                                            <span class="badge bg-success">
+                                                <i class="bi bi-check-circle me-1"></i> Déjà assigné
+                                            </span>
+                                        @endif
+                                    </td>
+                                </tr>
+                            @empty
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        <i class="bi bi-check-circle fs-3 d-block mb-2 text-success"></i>
+                                        Aucun nouveau ticket aujourd'hui!
+                                    </td>
+                                </tr>
+                            @endforelse
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>

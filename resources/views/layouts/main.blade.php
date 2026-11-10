@@ -142,7 +142,7 @@
                     @if (Auth::user()->role === 'admin')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('admin/departements*') ? 'active' : '' }}"
-                                href="/">
+                                href="{{ route('admin.departements.index') }}">
                                 <i class="bi bi-building me-2"></i> Départements
                             </a>
                         </li>
@@ -171,7 +171,7 @@
                     <ul class="dropdown-menu dropdown-menu-end shadow border-0" aria-labelledby="dropdownUser"
                         style="background-color: #465240;">
                         <li>
-                            <a class="dropdown-item text-white" href="#"
+                            <a class="dropdown-item text-white" href="{{ route('profile.edit') }}"
                                 onmouseover="this.style.backgroundColor='#5a6853'"
                                 onmouseout="this.style.backgroundColor='transparent'">
                                 <i class="bi bi-gear me-2"></i> Mes paramètres
