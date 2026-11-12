@@ -79,7 +79,7 @@
                     <a href="{{ route('admin.departements.index') }}" class="btn btn-light me-2 border">Annuler</a>
                     <button type="submit" class="btn btn-primary px-4"
                         style="background-color: #5a6853; border-color: #5a6853;">
-                        <i class="bi bi-check-lg me-1"></i> Mettre à jour
+                        Mettre à jour
                     </button>
                 </div>
             </form>

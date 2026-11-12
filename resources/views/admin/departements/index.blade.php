@@ -49,13 +49,18 @@
             <i class="bi bi-building me-2"></i></i> Liste ({{ $departements->count() }})
         </h5>
         <form action="{{ route('admin.departements.index') }}" method="GET" class="d-flex justify-content-center mx-4 w-50">
-            <div class="input-group">
-                <span class="input-group-text bg-transparent border-end-0">
-                    <i class="bi bi-search text-muted"></i>
+            <div class="input-group shadow-sm rounded-pill"
+                style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(90, 104, 83, 0.2); overflow: hidden;">
+
+                <span class="input-group-text bg-transparent border-0 ps-3 pe-2">
+                    <i class="bi bi-search text-secondary"></i>
                 </span>
                 <input type="text" name="search" value="{{ request('search') }}"
-                    class="form-control border-start-0 bg-transparent shadow-none" placeholder="Rechercher par nom"
-                    style="background-color: transparent !important;">
+                    class="form-control border-0 bg-transparent shadow-none" placeholder="Rechercher par nom..."
+                    style="font-size: 0.95rem;">
+                <button type="submit" class="btn border-0 px-3" style="background-color: #5a6853; color: white;">
+                    <i class="bi bi-funnel-fill"></i>
+                </button>
             </div>
         </form>
         <a href="{{ route('admin.departements.create') }}" class="btn btn-primary"

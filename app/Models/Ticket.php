@@ -25,4 +25,18 @@ class Ticket extends Model
     {
         return $this->belongsTo(User::class, 'assigned_to');
     }
+
+    public function attachments()
+    {
+        return $this->hasMany(Attachment::class);
+    }
+    public function histories()
+    {
+        return $this->hasMany(TicketHistory::class)->latest();
+    }
+
+    public function messages()
+    {
+        return $this->hasMany(Message::class)->oldest();
+    }
 }

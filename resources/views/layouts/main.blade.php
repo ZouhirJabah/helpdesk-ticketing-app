@@ -127,24 +127,111 @@
                     @if (Auth::user()->role === 'admin')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('admin/users*') ? 'active' : '' }}"
-                                href="{{ route('admin.users.index') }}">
+                                data-bs-toggle="collapse" href="#employesMenu" role="button" aria-expanded="false"
+                                aria-controls="employesMenu">
                                 <i class="bi bi-people me-2"></i> Employés
+                                <i class="bi bi-chevron-down ms-auto" style="float: right; font-size: 0.8rem;"></i>
                             </a>
+                            <div class="collapse" id="employesMenu">
+                                <ul class="nav flex-column ms-3 mt-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('admin.users.create') ? 'active' : '' }}"
+                                            href="{{ route('admin.users.create') }}">
+                                            <i class="bi bi-plus me-2"></i> Ajouter Employé
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('admin.users.index') ? 'active' : '' }}"
+                                            href="{{ route('admin.users.index') }}">
+                                            <i class="bi bi-list-ul me-2"></i> Afficher Employés
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     @endif
                     <li class="nav-item">
-                        <a class="nav-link {{ request()->is('tickets*') ? 'active' : '' }}"
-                            href="{{ route('tickets.index') }}">
+                        <a class="nav-link {{ request()->is('tickets*') ? 'active' : '' }}" data-bs-toggle="collapse"
+                            href="#ticketsMenu" role="button" aria-expanded="false" aria-controls="ticketsMenu">
                             <i class="bi bi-ticket-detailed me-2"></i> Tickets
-
+                            <i class="bi bi-chevron-down ms-auto" style="float: right; font-size: 0.8rem;"></i>
                         </a>
+
+                        <div class="collapse {{ request()->is('tickets*') ? 'active' : '' }}" id="ticketsMenu">
+                            <ul class="nav flex-column ms-3 mt-1">
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('tickets.create') ? 'active' : '' }}"
+                                        href="{{ route('tickets.create') }}">
+                                        <i class="bi bi-plus me-2"></i>Créé un ticket
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link {{ request()->routeIs('tickets.index') ? 'active' : '' }}"
+                                        href="{{ route('tickets.index') }}">
+                                        <i class="bi bi-list-ul me-2"></i>Afficher les tickets
+                                    </a>
+                                </li>
+                                @if (Auth::user()->role === 'admin')
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('tickets.archives') ? 'active' : '' }}"
+                                            href="{{ route('tickets.archives') }}">
+                                            <i class="bi bi-list-ul me-2"></i>Afficher Archives
+                                        </a>
+                                    </li>
+                                @endif
+                            </ul>
+                        </div>
                     </li>
                     @if (Auth::user()->role === 'admin')
                         <li class="nav-item">
                             <a class="nav-link {{ request()->is('admin/departements*') ? 'active' : '' }}"
-                                href="{{ route('admin.departements.index') }}">
+                                data-bs-toggle="collapse" href="#departementsMenu" role="button" aria-expanded="false"
+                                aria-controls="departementsMenu">
                                 <i class="bi bi-building me-2"></i> Départements
+                                <i class="bi bi-chevron-down ms-auto" style="float: right; font-size: 0.8rem;"></i>
                             </a>
+                            <div class="collapse" id="departementsMenu">
+                                <ul class="nav flex-column ms-3 mt-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('admin.departements.create') ? 'active' : '' }}"
+                                            href="{{ route('admin.departements.create') }}">
+                                            <i class="bi bi-plus"></i>Ajouter Département
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('admin.departements.index') ? 'active' : '' }}"
+                                            href="{{ route('admin.departements.index') }}">
+                                            <i class="bi bi-list-ul me-2"></i>Afficher Départements
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </li>
+                    @endif
+                    @if (Auth::user()->role === 'admin')
+                        <li class="nav-item">
+                            <a class="nav-link {{ request()->is('admin/solutions*') ? 'active' : '' }}"
+                                data-bs-toggle="collapse" href="#solutionsMenu" role="button" aria-expanded="false"
+                                aria-controls="solutionsMenu">
+                                <i class="bi bi-folder me-2"></i> Solutions
+                                <i class="bi bi-chevron-down ms-auto" style="float: right; font-size: 0.8rem;"></i>
+                            </a>
+                            <div class="collapse" id="solutionsMenu">
+                                <ul class="nav flex-column ms-3 mt-1">
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('admin.solutions.create') ? 'active' : '' }}"
+                                            href="{{ route('admin.solutions.create') }}">
+                                            <i class="bi bi-plus me-2"></i>Ajouter Solution
+                                        </a>
+                                    </li>
+                                    <li class="nav-item">
+                                        <a class="nav-link {{ request()->routeIs('admin.solutions.index') ? 'active' : '' }}"
+                                            href="{{ route('admin.solutions.index') }}">
+                                            <i class="bi bi-list-ul me-2"></i>Afficher Solutions
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
                         </li>
                     @endif
                 </ul>
@@ -154,8 +241,8 @@
         <div class="right-panel">
             <div class="navbar-custom d-flex justify-content-end align-items-center px-4">
                 <div class="dropdown">
-                    <a class="d-flex align-items-center text-decoration-none text-white" href="#" role="button"
-                        id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
+                    <a class="d-flex align-items-center text-decoration-none text-white" href="#"
+                        role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
                         <i class="bi bi-person-fill fs-4 me-2"></i>
                         <span>
                             Bonjour

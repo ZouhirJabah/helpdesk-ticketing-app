@@ -40,9 +40,42 @@
             @endif
             ({{ $tickets->count() }})
         </h5>
+        <form action="{{ route('tickets.index') }}" method="GET" class="d-flex justify-content-center mx-4 w-50">
+            <form action="{{ route('tickets.index') }}" method="GET" class="d-flex justify-content-center mx-4 w-50">
+                <div class="input-group shadow-sm rounded-pill"
+                    style="background-color: rgba(255, 255, 255, 0.5); border: 1px solid rgba(90, 104, 83, 0.2); overflow: hidden;">
+
+                    <span class="input-group-text bg-transparent border-0 ps-3 pe-2">
+                        <i class="bi bi-search text-secondary"></i>
+                    </span>
+                    <input type="text" name="search" value="{{ request('search') }}"
+                        class="form-control border-0 bg-transparent shadow-none" placeholder="Rechercher par référence..."
+                        style="font-size: 0.95rem;">
+
+                    <div class="vr my-2 text-muted opacity-25"></div>
+
+                    <select name="priority" class="form-select border-0 bg-transparent shadow-none"
+                        style="max-width: 160px; font-size: 0.95rem; cursor: pointer;">
+                        <option value="">Toutes</option>
+                        <option value="Low" {{ request('priority') == 'Low' ? 'selected' : '' }}>Basse</option>
+                        <option value="Medium" {{ request('priority') == 'Medium' ? 'selected' : '' }}>Moyenne</option>
+                        <option value="High" {{ request('priority') == 'High' ? 'selected' : '' }}>Haute</option>
+                        <option value="Urgent" {{ request('priority') == 'Urgent' ? 'selected' : '' }}>Urgente</option>
+                    </select>
+
+                    <button type="submit" class="btn border-0 px-3" style="background-color: #5a6853; color: white;">
+                        <i class="bi bi-funnel-fill"></i>
+                    </button>
+                </div>
+            </form>
+        </form>
         <a href="{{ route('tickets.create') }}" class="btn btn-primary"
             style="background-color: #5a6853; border-color: #5a6853;">
-            <i class="bi bi-plus-lg me-2"></i> Nouveau Ticket
+            Ajouter Ticket
+        </a>
+        <a href="{{ route('tickets.archives') }}" class="btn btn-primary"
+            style="background-color: #5a6853; border-color:#5a6853">
+            Tickets Résolus
         </a>
     </div>
 
@@ -59,7 +92,9 @@
                         <th>Sujet</th>
                         <th>Statut</th>
                         <th>Priorité</th>
-                        <th>employe</th>
+                        @if (Auth::user()->role === 'admin')
+                            <th>employe</th>
+                        @endif
                         <th class="pe-4">Actions</th>
                     </tr>
                 </thead>
@@ -86,13 +121,19 @@
                                     Urgente
                                 @elseif($ticket->priority == 'High')
                                     Haute
+                                @elseif($ticket->priority == 'Medium')
+                                    Moyenne
+                                @elseif($ticket->priority == 'Low')
+                                    Basse
                                 @else
                                     {{ $ticket->priority }}
                                 @endif
                             </td>
-                            <td>
-                                {{ $ticket->requester->first_name }} {{ $ticket->requester->last_name }}
-                            </td>
+                            @if (Auth::user()->role === 'admin')
+                                <td>
+                                    {{ $ticket->requester->first_name }} {{ $ticket->requester->last_name }}
+                                </td>
+                            @endif
                             <td class="text-center pe-3">
                                 <div class="d-flex justify-content-center gap-2"> <a
                                         href="{{ route('tickets.show', $ticket) }}" class="btn btn-sm" title="Voir">

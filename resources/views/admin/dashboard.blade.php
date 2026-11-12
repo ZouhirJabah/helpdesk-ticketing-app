@@ -145,7 +145,7 @@
         <div class="col-md-6 mb-4">
             <div class="card border-0 shadow-sm" style="background-color: #e6e3db !important;">
                 <div class="card-header border-bottom-0" style="background-color: #e6e3db;">
-                    <h5 class="mb-0">Tickets par Statut</h5>
+                    <h5 class="mb-0"><i class="bi bi-pie-chart me-2"></i>Tickets par Statut</h5>
                 </div>
                 <div class="card-body" style="height: 300px; background-color: #e6e3db; border-radius: 0 0 8px 8px;">
                     <canvas id="statusChart"></canvas>
@@ -155,7 +155,7 @@
         <div class="col-md-6 mb-4">
             <div class="card border-0 shadow-sm" style="background-color: #e6e3db !important;">
                 <div class="card-header border-bottom-0" style="background-color: #e6e3db;">
-                    <h5 class="mb-0">Tickets par Priorité</h5>
+                    <h5 class="mb-0"><i class="bi bi-bar-chart-line me-2"></i>Tickets par Priorité</h5>
                 </div>
                 <div class="card-body" style="height: 300px; background-color: #e6e3db; border-radius: 0 0 8px 8px;">
                     <canvas id="priorityChart"></canvas>
@@ -166,11 +166,10 @@
     <div class="row mt-4">
         <div class="col-12">
             <div class="card border-0 shadow-sm" style="background-color: transparent;">
-
                 <div class="card-header border-bottom-0 pt-3 d-flex justify-content-between align-items-center"
                     style="background-color: transparent;">
-                    <h5 class="mb-0 fw-bold" style="color: #5a6853;">
-                        Tickets reçus Aujourd'hui
+                    <h5 class="mb-0 fw-bold" style="background-color: #e6e3db;">
+                        <i class="bi bi-bell me-2"></i> Tickets reçus Aujourd'hui
                     </h5>
                     <a href="{{ route('tickets.index') }}" class="btn btn-sm btn-outline-secondary">Voir tout</a>
                 </div>
@@ -198,11 +197,21 @@
                                             Urgente
                                         @elseif($ticket->priority == 'High')
                                             Haute
-                                        @else
-                                            {{ $ticket->priority }}
+                                        @elseif($ticket->priority == 'Medium')
+                                            Moyenne
+                                        @elseif($ticket->priority == 'Low')
+                                            Basse
                                         @endif
                                     </td>
-                                    <td>{{ $ticket->status }}</td>
+                                    <td>
+                                        @if ($ticket->status == 'New')
+                                            Nouveau
+                                        @elseif($ticket->status == 'Proccessing')
+                                            En cours
+                                        @elseif($ticket->status == 'Solved')
+                                            Résolu
+                                        @endif
+                                    </td>
                                     <td class="text-end pe-4">
                                         @if (!$ticket->assigned_to)
                                             <form action="{{ route('tickets.assign', $ticket->id) }}" method="POST"
@@ -216,7 +225,7 @@
                                             </form>
                                         @else
                                             <span class="badge bg-success">
-                                                <i class="bi bi-check-circle me-1"></i> Déjà assigné
+                                                <i class="bi bi-check-circle me-1"></i>assigné
                                             </span>
                                         @endif
                                     </td>
@@ -246,8 +255,8 @@
             const statusCtx = document.getElementById('statusChart').getContext('2d');
             const statusData = @json($ticketsByStatus);
 
-            const statusKeys = ['New', 'Proccessing', 'Solved', 'Late'];
-            const statusLabels = ['Nouveau', 'En cours', 'Résolu', 'En retard'];
+            const statusKeys = ['New', 'Proccessing', 'Solved'];
+            const statusLabels = ['Nouveau', 'En cours', 'Résolu'];
 
             const statusValues = statusKeys.map(label => statusData[label] || 0);
 
@@ -257,7 +266,7 @@
                     labels: statusLabels,
                     datasets: [{
                         data: statusValues,
-                        backgroundColor: ['#c25e00', '#6e6e6e', '#557a5a', '#dc3545'],
+                        backgroundColor: ['#c25e00', '#6e6e6e', '#557a5a'],
                         borderWidth: 1
                     }]
                 },
