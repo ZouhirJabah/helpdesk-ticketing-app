@@ -240,6 +240,26 @@
 
         <div class="right-panel">
             <div class="navbar-custom d-flex justify-content-end align-items-center px-4">
+                <div class="dropdown me-3">
+                    <a href="#" class="text-white position-relative" id="notificationBell"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        <i class="bi bi-bell fs-4"></i>
+                        <span id="notificationCount"
+                            class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
+                            style="display: none; font-size: 0.6rem;">
+                            0
+                        </span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end shadow border-0" id="notificationList"
+                        aria-labelledby="notificationBell" style="background-color: #465240; width: 300px;">
+                        <li class="px-3 py-2 text-white border-bottom"
+                            style="border-color: rgba(255,255,255,0.1) !important;">
+                            <strong>Notifications</strong>
+                        </li>
+                        <li><a class="dropdown-item text-white text-center small" href="#">Aucune nouvelle
+                                notification</a></li>
+                    </ul>
+                </div>
                 <div class="dropdown">
                     <a class="d-flex align-items-center text-decoration-none text-white" href="#"
                         role="button" id="dropdownUser" data-bs-toggle="dropdown" aria-expanded="false">
@@ -289,6 +309,82 @@
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            if (document.getElementById('notificationBell')) {
+                function checkNotifications() {
+                    fetch('{{ route('api.unread-messages') }}')
+                        .then(response => response.json())
+                        .then(messages => {
+                            const badge = document.getElementById('notificationCount');
+                            const list = document.getElementById('notificationList');
+
+                            list.innerHTML = `
+                                <li class="px-3 py-2 text-white border-bottom" style="border-color: rgba(255,255,255,0.1) !important;">
+                                    <strong>Notifications</strong>
+                                </li>
+                            `;
+
+                            if (messages.length > 0) {
+                                badge.style.display = 'inline-block';
+                                badge.textContent = messages.length;
+
+                                messages.forEach(msg => {
+                                    list.innerHTML += `
+                                        <li>
+                                            <a class="dropdown-item text-white py-2 border-bottom"
+                                            href="/tickets/${msg.ticket.id}"
+                                            style="white-space: normal; border-color: rgba(255,255,255,0.1) !important;"
+                                            onmouseover="this.style.backgroundColor='#5a6853'"
+                                            onmouseout="this.style.backgroundColor='transparent'">
+                                                <div class="d-flex align-items-start">
+                                                    <div class="me-2">
+                                                        <i class="bi bi-chat-dots text-warning"></i>
+                                                    </div>
+                                                    <div>
+                                                        <strong>${msg.user.first_name}</strong> a répondu<br>
+                                                        <small class="text-white-50">${msg.ticket.reference} - ${msg.ticket.subject}</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </li>
+                                    `;
+                                });
+                            } else {
+                                badge.style.display = 'none';
+                            }
+                        })
+                        .catch(err => console.log('Erreur notification:', err));
+                }
+
+                checkNotifications();
+                setInterval(checkNotifications, 10000);
+            }
+        });
+    </script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const dropdownToggles = document.querySelectorAll('[data-bs-toggle="collapse"]');
+
+            dropdownToggles.forEach(toggle => {
+                toggle.addEventListener('click', function() {
+                    const targetId = this.getAttribute('href');
+                    const target = document.querySelector(targetId);
+
+                    if (target.classList.contains('show')) {
+                        return;
+                    }
+                    document.querySelectorAll('.sidebar .collapse.show').forEach(openMenu => {
+                        const bsCollapse = bootstrap.Collapse.getInstance(openMenu);
+                        if (bsCollapse) {
+                            bsCollapse.hide();
+                        }
+                    });
+                });
+            });
+        });
+    </script>
     @stack('scripts')
 </body>
 

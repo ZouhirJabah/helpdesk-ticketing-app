@@ -75,6 +75,7 @@ class TicketController extends Controller
 
     public function show(Ticket $ticket)
     {
+        $this->markMessagesAsRead($ticket);
         $employees = \App\Models\User::where('role', 'employee')->get();
         return view('tickets.show', compact('ticket', 'employees'));
     }
@@ -169,5 +170,31 @@ class TicketController extends Controller
         ]);
 
         return back()->with('success', 'Message envoyé !');
+    }
+
+
+    public function getUnreadMessages()
+    {
+        $userId = Auth::id();
+        $unread = \App\Models\Message::where('is_read', false)
+            ->where('user_id', '!=', $userId)
+            ->whereHas('ticket', function ($query) use ($userId) {
+                if (Auth::user()->role !== 'admin') {
+                    $query->where('user_id', $userId);
+                }
+            })
+            ->with(['ticket', 'user'])
+            ->latest()
+            ->take(10)
+            ->get();
+
+        return response()->json($unread);
+    }
+
+    private function markMessagesAsRead(Ticket $ticket)
+    {
+        \App\Models\Message::where('ticket_id', $ticket->id)
+            ->where('user_id', '!=', Auth::id())
+            ->update(['is_read' => true]);
     }
 }
