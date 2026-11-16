@@ -37,20 +37,21 @@
             @forelse ($solutions as $solution)
                 <div class="card border-0 shadow-sm mb-4">
                     <div class="card-header bg-white border-bottom-0 pt-4 pb-3">
-                        <h4 class="mb-0 fw-bold" style="color: #5a6853;">{{ $solution->title }}
-                        </h4>
+                        <h5 class="mb-0 fw-bold" style="color:red;"><i class="bi bi-exclamation-triangle-fill"></i>
+                            {{ $solution->title }}
+                        </h5>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <h6 class="fw-bold text-danger mb-2">Description :
+                                <h6 class="fw-bold text-secondary mb-2"><i class="bi bi-body-text"></i> Description :
                                 </h6>
                                 <div class="bg-light p-3 rounded border h-100" style="min-height: 100px;">
                                     {{ $solution->description }}
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <h6 class="fw-bold text-success mb-2">Solution :
+                                <h6 class="fw-bold text-success mb-2"><i class="bi bi-check-circle-fill"></i> Solution :
                                 </h6>
                                 <div class="bg-light p-3 rounded border h-100" style="min-height: 100px;">
                                     {{ $solution->solution }}
