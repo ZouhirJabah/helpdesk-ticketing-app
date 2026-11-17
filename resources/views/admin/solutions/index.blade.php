@@ -36,10 +36,22 @@
         <div class="col-md-12">
             @forelse ($solutions as $solution)
                 <div class="card border-0 shadow-sm mb-4">
-                    <div class="card-header bg-white border-bottom-0 pt-4 pb-3">
-                        <h5 class="mb-0 fw-bold" style="color:red;"><i class="bi bi-exclamation-triangle-fill"></i>
-                            {{ $solution->title }}
+                    <div
+                        class="card-header bg-white border-bottom-0 pt-4 pb-3 d-flex justify-content-between align-items-center">
+                        <h5 class="mb-0 fw-bold" style="color: red;">
+                            <i class="bi bi-exclamation-octagon-fill me-2"></i>{{ $solution->title }}
                         </h5>
+                        <div class="d-flex gap-2">
+                            <a href="{{ route('admin.solutions.edit', $solution->id) }}"
+                                class="btn btn-sm btn-outline-warning" title="Modifier">
+                                <i class="bi bi-pencil"></i>
+                            </a>
+                            <button type="button" class="btn btn-sm btn-outline-danger" title="Supprimer"
+                                data-bs-toggle="modal" data-bs-target="#deleteModal" data-sol-id="{{ $solution->id }}"
+                                data-sol-title="{{ $solution->title }}">
+                                <i class="bi bi-trash"></i>
+                            </button>
+                        </div>
                     </div>
                     <div class="card-body pt-0">
                         <div class="row">
@@ -68,4 +80,44 @@
             @endforelse
         </div>
     </div>
+    <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered">
+            <div class="modal-content border-0 shadow">
+                <div class="modal-header border-0 bg-light py-2">
+                    <h6 class="modal-title fw-bold text-danger mb-0" id="deleteModalLabel">
+                        <i class="bi bi-exclamation-triangle-fill me-1"></i> Supprimer ?
+                    </h6>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                        style="font-size: 0.8rem;"></button>
+                </div>
+                <div class="modal-body text-center py-3">
+                    <p class="mb-1">Voulez-vous vraiment supprimer <br><strong id="solTitle"></strong> ?</p>
+                    <small class="text-muted">Cette action est irréversible.</small>
+                </div>
+                <div class="modal-footer border-0 justify-content-center py-2">
+                    <button type="button" class="btn btn-sm btn-light" data-bs-dismiss="modal">Annuler</button>
+                    <form id="deleteForm" action="" method="POST" class="d-inline m-0">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-sm btn-danger">
+                            <i class="bi bi-trash me-1"></i> Supprimer
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var deleteModal = document.getElementById('deleteModal');
+            deleteModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var solId = button.getAttribute('data-sol-id');
+                var solTitle = button.getAttribute('data-sol-title');
+
+                deleteModal.querySelector('#solTitle').textContent = solTitle;
+                deleteModal.querySelector('#deleteForm').action = '/admin/solutions/' + solId;
+            });
+        });
+    </script>
 @endsection

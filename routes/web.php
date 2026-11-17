@@ -82,6 +82,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/solutions', [SolutionController::class, 'index'])->name('admin.solutions.index');
         Route::get('/solutions/create', [SolutionController::class, 'create'])->name('admin.solutions.create');
         Route::post('/solutions', [SolutionController::class, 'store'])->name('admin.solutions.store');
+        Route::get('/solutions/{solution}/edit', [SolutionController::class, 'edit'])->name('admin.solutions.edit');
+        Route::put('/solutions/{solution}', [SolutionController::class, 'update'])->name('admin.solutions.update');
+        Route::delete('/solutions/{solution}', [SolutionController::class, 'destroy'])->name('admin.solutions.destroy');
     });
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile', [ProfileController::class, 'update'])->name('profile.update');

@@ -42,6 +42,9 @@
 
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
+            <h4 class="fw-bold mb-4" style="color: #5a6853;"> <i class="bi bi-briefcase me-2"></i>Ajouter Département
+            </h4>
+
             @if ($errors->any())
                 <div class="alert alert-danger">
                     <ul class="mb-0">
@@ -54,10 +57,8 @@
 
             <form action="{{ route('admin.departements.store') }}" method="POST">
                 @csrf
-
                 <div class="inner-card">
-                    <div class="inner-card-header">
-                        <i class="bi bi-briefcase me-2"></i>Ajouter Département
+                    <div class="inner-card-header">Détails du Département
                     </div>
                     <div class="card-body p-4">
                         <div class="row">

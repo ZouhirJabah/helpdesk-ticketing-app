@@ -43,7 +43,7 @@
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
             <h4 class="fw-bold mb-4" style="color: #5a6853;">
-                Ouvrir un nouveau ticket
+                <i class="bi bi-ticket-detailed me-2"></i> Ouvrir un nouveau ticket
             </h4>
 
             @if ($errors->any())

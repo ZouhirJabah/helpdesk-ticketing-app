@@ -42,4 +42,32 @@ class SolutionController extends Controller
 
         return redirect()->route('admin.solutions.index')->with('success', 'Solution ajoutée avec succès !');
     }
+
+    public function edit(Solution $solution)
+    {
+        return view('admin.solutions.edit', compact('solution'));
+    }
+
+    public function update(Request $request, Solution $solution)
+    {
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'solution' => 'required|string',
+        ]);
+
+        $solution->update([
+            'title' => $request->title,
+            'description' => $request->description,
+            'solution' => $request->solution,
+        ]);
+
+        return redirect()->route('admin.solutions.index')->with('success', 'Solution modifiée avec succès !');
+    }
+
+    public function destroy(Solution $solution)
+    {
+        $solution->delete();
+        return redirect()->route('admin.solutions.index')->with('danger', 'Solution supprimée avec succès !');
+    }
 }

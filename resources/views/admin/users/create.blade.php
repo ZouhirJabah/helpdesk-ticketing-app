@@ -42,9 +42,9 @@
 
     <div class="card border-0 shadow-sm">
         <div class="card-body p-4">
-            {{-- <h4 class="fw-bold mb-4" style="color: #5a6853;">
-                Nouvel employé
-            </h4> --}}
+            <h4 class="fw-bold mb-4" style="color: #5a6853;">
+                <i class="bi bi-people-fill me-2"></i> Ajouter employé
+            </h4>
 
             @if ($errors->any())
                 <div class="alert alert-danger">

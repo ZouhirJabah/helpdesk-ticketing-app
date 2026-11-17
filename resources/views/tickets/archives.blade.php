@@ -73,9 +73,9 @@
             style="background-color: #5a6853; border-color: #5a6853;">
             Ajouter Ticket
         </a>
-        <a href="{{ route('tickets.archives') }}" class="btn btn-primary"
+        <a href="{{ route('tickets.index') }}" class="btn btn-primary"
             style="background-color: #5a6853; border-color:#5a6853">
-            Tickets Résolus
+            Tous Tickets
         </a>
     </div>
 
