@@ -18,7 +18,6 @@ Application web complète de gestion de tickets (Helpdesk) développée avec **L
 - **Backend** : Laravel 12, PHP 8.2
 - **Base de données** : MySQL
 - **Frontend** : Blade, Bootstrap 5, Chart.js
-- **Gestion de version** : Git / GitHub
 
 ## 🚀 Installation Locale
 
